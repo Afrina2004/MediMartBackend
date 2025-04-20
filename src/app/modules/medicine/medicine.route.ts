@@ -1,12 +1,11 @@
 //import express from 'express';
+import express from 'express';
 import { MedicineControllers } from './medicine.controller';
-import express, { NextFunction, Request, Response } from 'express';
 
-
+import validateRequest from 'src/app/middlewares/validateRequest';
+import auth from '../../middlewares/auth';
 import { USER_ROLE } from '../user/user.constant';
 import medicineValidationSchema from './medicine.validation';
-import auth from 'src/app/middlewares/auth';
-import validateRequest from 'src/app/middlewares/validateRequest';
 //import { updateMedicineSchema  } from './updateProduct.validation';
 
 const router = express.Router();
@@ -15,19 +14,23 @@ router.post(
   '/',
   auth(USER_ROLE.admin),
   validateRequest(medicineValidationSchema),
-  MedicineControllers.createAMedicine,
+  MedicineControllers.createAMedicine
 );
 
 router.get(
   '/',
   //auth( USER_ROLE.admin,USER_ROLE.customer),
-  MedicineControllers.getAllMedicines,
+  MedicineControllers.getAllMedicines
 );
 
 router.get('/:id', MedicineControllers.getASpecificMedicine);
 
 router.put('/:id', auth(USER_ROLE.admin), MedicineControllers.updateAMedicine);
 
-router.delete('/:id', auth(USER_ROLE.admin), MedicineControllers.deleteAMedicine);
+router.delete(
+  '/:id',
+  auth(USER_ROLE.admin),
+  MedicineControllers.deleteAMedicine
+);
 
 export const MedicineRoutes = router;

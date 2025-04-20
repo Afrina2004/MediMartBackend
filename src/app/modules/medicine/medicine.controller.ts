@@ -1,16 +1,28 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
+import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
+import { sendResponse } from '../../utils/sendResponse';
+import { Medicine } from './medicine.model';
 import { MedicineServices } from './medicine.service';
 import medicineValidationSchema from './medicine.validation';
-import { Medicine } from './medicine.model';
-import httpStatus from 'http-status';
 import updateMedicineSchema from './updateMedicine.validation';
-import catchAsync from 'src/app/utils/catchAsync';
-import { sendResponse } from 'src/app/utils/sendResponse';
 //import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
 
 const createAMedicine = catchAsync(async (req, res) => {
-  const { name, Img, brand, price, symptoms, description,manufacturerDetails,genericName,strength,dosCategory, quantity, inStock,expiryDate } =
-    req.body;
+  const {
+    name,
+    Img,
+    brand,
+    price,
+    symptoms,
+    description,
+    manufacturerDetails,
+    genericName,
+    strength,
+    dosCategory,
+    quantity,
+    inStock,
+    expiryDate,
+  } = req.body;
   const validatedData = medicineValidationSchema.parse({
     name,
     Img,
@@ -24,7 +36,7 @@ const createAMedicine = catchAsync(async (req, res) => {
     dosCategory,
     quantity,
     inStock,
-    expiryDate
+    expiryDate,
   });
 
   const newMedicine = new Medicine(validatedData);
